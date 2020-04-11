@@ -12,12 +12,14 @@ import java.awt.event.ActionListener;
 import static java.awt.BorderLayout.CENTER;
 
 public class Control {
+
     private Gui frame;
-    private JPanel  center;
+    private JPanel center;
+    private PreseceControl presenceControl;
 
     public Control(Gui frame) {
         this.frame = frame;
-        this.frame.addListenner(new listener());
+        frame.addListenner(new listener());
     }
 
     class listener implements ActionListener {
@@ -32,28 +34,28 @@ public class Control {
 
                 Presence pr = new Presence();
                 center = pr.showPresence();
+                presenceControl = new PreseceControl(pr,frame);
                 frame.add(center);
                 frame.getBorder().addLayoutComponent(center, CENTER);
                 frame.revalidate();
-           }else if(source == frame.getMarks()){
-                if(frame.getBorder().getLayoutComponent(CENTER)!=null)
+            } else if (source == frame.getMarks()) {
+                if (frame.getBorder().getLayoutComponent(CENTER) != null)
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));
 
                 Marks pr = new Marks();
-                center  = pr.showMarks();
+                center = pr.showMarks();
                 frame.add(center);
-                frame.getBorder().addLayoutComponent(center,CENTER);
+                frame.getBorder().addLayoutComponent(center, CENTER);
                 frame.revalidate();
-            }else if(source == frame.getNewPupil()){
-                if(frame.getBorder().getLayoutComponent(CENTER)!=null)
+            } else if (source == frame.getNewPupil()) {
+                if (frame.getBorder().getLayoutComponent(CENTER) != null)
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));
 
                 Configuration pr = new Configuration();
                 center = pr.showConfiguration();
                 frame.add(center);
-                frame.getBorder().addLayoutComponent(center,CENTER);
+                frame.getBorder().addLayoutComponent(center, CENTER);
                 frame.revalidate();
-                System.out.println("Konfiguracja działam");
             }
         }
     }
