@@ -70,10 +70,12 @@ public class Configuration extends JFrame {
         option.add(newPupil, gc);
 
         edit = new JButton("Edytuj ucznia");
+        gc.gridx = 0;
         gc.gridy = 1;
         option.add(edit, gc);
 
         delete = new JButton("Usuń ucznia");
+        gc.gridx = 0;
         gc.gridy = 2;
         option.add(delete, gc);
 

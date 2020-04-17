@@ -1,9 +1,12 @@
 package Control;
 
+import Control.Present.PresenceTable;
+import Control.Present.PresenceControl;
 import GUI.Configuration;
 import GUI.Gui;
 import GUI.Marks;
 import GUI.Presence;
+import Model.Connection.ModelFasade;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -15,10 +18,14 @@ public class Control {
 
     private Gui frame;
     private JPanel center;
-    private PreseceControl presenceControl;
+    private PresenceControl presenceControl;
+    private ModelFasade model;
+    private PresenceTable tableModel;
+    private  Presence pr;
 
-    public Control(Gui frame) {
+    public Control(Gui frame, ModelFasade model) {
         this.frame = frame;
+        this.model = model;
         frame.addListenner(new listener());
     }
 
@@ -32,12 +39,14 @@ public class Control {
                 if (frame.getBorder().getLayoutComponent(CENTER) != null)
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));
 
-                Presence pr = new Presence();
+                tableModel = PresenceTable.getInstance(model);
+                pr = new Presence(tableModel);
+                presenceControl = new PresenceControl(frame,model,pr,tableModel);
                 center = pr.showPresence();
-                presenceControl = new PreseceControl(pr,frame);
                 frame.add(center);
                 frame.getBorder().addLayoutComponent(center, CENTER);
                 frame.revalidate();
+
             } else if (source == frame.getMarks()) {
                 if (frame.getBorder().getLayoutComponent(CENTER) != null)
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));

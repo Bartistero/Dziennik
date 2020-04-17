@@ -7,7 +7,7 @@ public class MarkStudent extends Student {
 
     private ArrayList<Integer> marks;
 
-    public MarkStudent(int id, String name, String surrname){
+    public MarkStudent(String id, String name, String surrname){
         super(id,name,surrname);
         marks = new ArrayList<Integer>();
     }

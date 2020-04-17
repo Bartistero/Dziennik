@@ -7,7 +7,7 @@ public class ConfigurationStudent extends  Student{
     private String tel;
     private String eMail;
 
-    public ConfigurationStudent(int id, String name, String surrname){
+    public ConfigurationStudent(String id, String name, String surrname){
         super(id,name,surrname);
     }
 
@@ -16,14 +16,17 @@ public class ConfigurationStudent extends  Student{
     }
 
     public String getPESEL() {
+
         return PESEL;
     }
 
     public String getTel() {
+
         return tel;
     }
 
     public String geteMail() {
+
         return eMail;
     }
 }

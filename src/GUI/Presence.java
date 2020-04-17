@@ -1,6 +1,12 @@
 package GUI;
 
+import Control.Present.PresenceTable;
+
 import javax.swing.*;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -22,9 +28,10 @@ public class Presence extends JFrame {
 
     private BorderLayout border;
 
+    private PresenceTable model;
 
-
-    public Presence() {
+    public Presence(PresenceTable model) {
+        this.model = model;
         setFrame();
     }
 
@@ -92,10 +99,13 @@ public class Presence extends JFrame {
         tab.setLayout(new BorderLayout());
 
 
-        JTable table = new JTable();
-
+        table = new JTable(model);
+        //set size frist column
+        setTableView();
         tab.add(table.getTableHeader(),BorderLayout.PAGE_START);
-        tab.add(table,BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(table);
+        tab.add(scrollPane,BorderLayout.CENTER);
+
         presence.add(tab,BorderLayout.CENTER);
 
     }
@@ -105,6 +115,7 @@ public class Presence extends JFrame {
         present.addActionListener(listener);
         absent.addActionListener(listener);
         late.addActionListener(listener);
+        newLesson.addActionListener(listener);
         save.addActionListener(listener);
         cancel.addActionListener(listener);
     }
@@ -155,6 +166,44 @@ public class Presence extends JFrame {
 
 
     public JTable getTable(){
+
         return table;
+    }
+    public void setTableView(){
+        table.getColumnModel().getColumn(0).setMaxWidth(50);
+        table.getColumnModel().getColumn(0).setMinWidth(200);
+        table.getColumnModel().getColumn(1).setMinWidth(200);
+        table.getColumnModel().getColumn(2).setMinWidth(200);
+
+        table.setColumnSelectionAllowed(false);
+        table.setRowSelectionAllowed(false);
+        table.setCellSelectionEnabled(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        table.getSelectionModel().addListSelectionListener(new RowColumnListSelectionListener(table));
+
+
+
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
+        for(int i=0;i<table.getColumnCount();i++)
+            table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+
+        table.setRowHeight(25);
+        table.setFont(new Font("Calibri",Font.PLAIN,20));
+
+
+        //tab.add(scrollPane, BorderLayout.EAST);
+    }
+    public static class RowColumnListSelectionListener implements ListSelectionListener {
+       JTable table;
+        public RowColumnListSelectionListener(JTable table){
+            this.table = table;
+        }
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            System.out.println("Zaznaczono: " + table.getSelectedRow()+ " " + table.getSelectedColumn());
+            table.revalidate();
+        }
     }
 }

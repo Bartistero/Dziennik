@@ -22,11 +22,13 @@ public class Gui extends JFrame {
         }
     public void frame() {
             setFrame();
+
     }
 
     private void setFrame(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 1000);
+        setSize(1000 ,1000);
+        //pack();
         setLocation(25,25);
         //setResizable(false);
 

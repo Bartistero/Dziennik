@@ -4,19 +4,19 @@ import java.util.ArrayList;
 
 public abstract class Student {
 
-    private int number;
-    private String name;
-    private String surname;
-    private static ArrayList<String> lesson;
+    String id;
+    String name;
+    String surname;
+    static ArrayList<String> lesson = new ArrayList<>();
 
-    public Student(int number, String name, String surname) {
-        this.number = number;
+    public Student(String number, String name, String surname) {
+        this.id = number;
         this.name = name;
         this.surname = surname;
     }
 
-    public int getNumber() {
-        return number;
+    public String getid() {
+        return id;
     }
 
     public String getName() {
