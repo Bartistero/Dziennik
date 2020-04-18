@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class NewLesson {
 
-    private String name;
+    private String name = "";
 
     public NewLesson(JPanel frame) {
 

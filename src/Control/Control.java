@@ -1,20 +1,19 @@
 package Control;
 
-import Control.Present.PresenceTable;
-import Control.Present.PresenceControl;
-import GUI.Configuration;
-import GUI.Gui;
-import GUI.Marks;
-import GUI.Presence;
+import GUI.*;
+import Model.Students.PresentStudent;
+import Model.Table.PresenceTable;
+//import PresenceControl;
 import Model.Connection.ModelFasade;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import static java.awt.BorderLayout.CENTER;
 
-public class Control {
+public class Control<Static> {
 
     private Gui frame;
     private JPanel center;
@@ -39,14 +38,20 @@ public class Control {
                 if (frame.getBorder().getLayoutComponent(CENTER) != null)
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));
 
-                tableModel = PresenceTable.getInstance(model);
-                pr = new Presence(tableModel);
-                presenceControl = new PresenceControl(frame,model,pr,tableModel);
-                center = pr.showPresence();
-                frame.add(center);
-                frame.getBorder().addLayoutComponent(center, CENTER);
-                frame.revalidate();
-
+                ArrayList<PresentStudent> sourceData;
+                sourceData = model.getPresentData();
+                if (!model.getError()) {
+                    tableModel = PresenceTable.getInstance(sourceData);
+                    pr = new Presence(tableModel);
+                    presenceControl = new PresenceControl(frame, model, pr, tableModel);
+                    center = pr.showPresence();
+                    frame.add(center);
+                    frame.getBorder().addLayoutComponent(center, CENTER);
+                    frame.revalidate();
+                } else {
+                    error();
+                    System.out.println("nie działąm");
+                }
             } else if (source == frame.getMarks()) {
                 if (frame.getBorder().getLayoutComponent(CENTER) != null)
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));
@@ -67,6 +72,9 @@ public class Control {
                 frame.revalidate();
             }
         }
+    }
+    public  void error(){
+        DialogInfo error = new DialogInfo(center,"Nie nawiązano połączenia z bazą danych","Błąd!");
     }
 }
 

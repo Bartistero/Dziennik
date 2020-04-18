@@ -1,11 +1,8 @@
 package GUI;
 
-import Control.Present.PresenceTable;
+import Model.Table.PresenceTable;
 
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -21,6 +18,8 @@ public class Presence extends JFrame {
     private JButton absent;
     private JButton late;
     private JButton newLesson;
+    private JButton deleteLesson;
+
     private JButton save;
     private JButton cancel;
 
@@ -69,7 +68,12 @@ public class Presence extends JFrame {
         gc.gridx = 0;
         gc.gridy = 3;
         newLesson = new JButton("Nowa Lekcja");
-        handling.add(newLesson,gc);
+        handling.add(newLesson, gc);
+
+        gc.gridx = 0;
+        gc.gridy = 4;
+        deleteLesson = new JButton("Usuń Lekcje");
+        handling.add(deleteLesson, gc);
 
         presence.add(handling, BorderLayout.EAST);
 
@@ -100,24 +104,45 @@ public class Presence extends JFrame {
 
 
         table = new JTable(model);
-        //set size frist column
         setTableView();
-        tab.add(table.getTableHeader(),BorderLayout.PAGE_START);
+        tab.add(table.getTableHeader(), BorderLayout.PAGE_START);
         JScrollPane scrollPane = new JScrollPane(table);
-        tab.add(scrollPane,BorderLayout.CENTER);
+        tab.add(scrollPane, BorderLayout.CENTER);
 
-        presence.add(tab,BorderLayout.CENTER);
+        presence.add(tab, BorderLayout.CENTER);
 
     }
 
-    public void addListenner(ActionListener listener){
+    public void addListenner(ActionListener listener, PresenceTable.TableListener listenerTable) {
 
         present.addActionListener(listener);
         absent.addActionListener(listener);
         late.addActionListener(listener);
         newLesson.addActionListener(listener);
+        deleteLesson.addActionListener(listener);
         save.addActionListener(listener);
         cancel.addActionListener(listener);
+        table.getSelectionModel().addListSelectionListener(listenerTable);
+    }
+
+    public void setTableView() {
+        table.getColumnModel().getColumn(0).setMaxWidth(50);
+        table.getColumnModel().getColumn(0).setMinWidth(200);
+        table.getColumnModel().getColumn(1).setMinWidth(200);
+        table.getColumnModel().getColumn(2).setMinWidth(200);
+
+        table.setColumnSelectionAllowed(false);
+        table.setRowSelectionAllowed(false);
+        table.setCellSelectionEnabled(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < table.getColumnCount(); i++)
+            table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+
+        table.setRowHeight(25);
+        table.setFont(new Font("Calibri", Font.PLAIN, 20));
     }
 
     public JPanel showPresence() {
@@ -164,46 +189,14 @@ public class Presence extends JFrame {
         return newLesson;
     }
 
+    public JButton getDeleteLesson() {
+        return deleteLesson;
+    }
 
-    public JTable getTable(){
+    public JTable getTable() {
 
         return table;
     }
-    public void setTableView(){
-        table.getColumnModel().getColumn(0).setMaxWidth(50);
-        table.getColumnModel().getColumn(0).setMinWidth(200);
-        table.getColumnModel().getColumn(1).setMinWidth(200);
-        table.getColumnModel().getColumn(2).setMinWidth(200);
 
-        table.setColumnSelectionAllowed(false);
-        table.setRowSelectionAllowed(false);
-        table.setCellSelectionEnabled(true);
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        table.getSelectionModel().addListSelectionListener(new RowColumnListSelectionListener(table));
-
-
-
-        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-        renderer.setHorizontalAlignment(JLabel.CENTER);
-        for(int i=0;i<table.getColumnCount();i++)
-            table.getColumnModel().getColumn(i).setCellRenderer(renderer);
-
-        table.setRowHeight(25);
-        table.setFont(new Font("Calibri",Font.PLAIN,20));
-
-
-        //tab.add(scrollPane, BorderLayout.EAST);
-    }
-    public static class RowColumnListSelectionListener implements ListSelectionListener {
-       JTable table;
-        public RowColumnListSelectionListener(JTable table){
-            this.table = table;
-        }
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            System.out.println("Zaznaczono: " + table.getSelectedRow()+ " " + table.getSelectedColumn());
-            table.revalidate();
-        }
-    }
 }
+

@@ -14,6 +14,7 @@ public class PresentStudent extends Student {
    }
 
     public ArrayList<String> getPresent() {
-        return present;
+
+       return present;
     }
 }

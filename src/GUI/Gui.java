@@ -14,7 +14,6 @@ public class Gui extends JFrame {
          JButton presence;
          JButton marks;
          JButton newPupil;
-
          BorderLayout border;
 
         public Gui(){

@@ -17,22 +17,22 @@ public class PresentData{
 
     private ArrayList<PresentStudent> studentList;
 
-    public PresentData() {
-        conect = new Conect();
+    public PresentData(Conect conect) {
+
+        this.conect = conect;
         statement = conect.getStatement();
         resultSet = conect.getResultSet();
+
     }
 
-    protected void readData() {
+    protected  void  readData() {
         String id;
         boolean column = true;
         String name;
         String surname;
         studentList = new ArrayList<>();
+        PresentStudent.getLesson().clear();
 
-        if (conect.newConection() == false) {
-
-        } else {
             try {
                 statement = conect.getConnection().createStatement();
                 resultSet = statement.executeQuery("SELECT * FROM obecnosc");
@@ -52,17 +52,14 @@ public class PresentData{
                     }
                     column = false;
                     studentList.add(st);
+                    studentList.get(0).getPresent().size();
                 }
-
             } catch (Exception e) {
-                System.out.println("coś nie pykło :( ");
-                System.err.println(e);
             }
         }
-        conect.disconect();
-    }
 
     public ArrayList<PresentStudent> getStudentList() {
+
         return studentList;
     }
 }
