@@ -1,19 +1,15 @@
 package Model.Connection;
 
-import Control.Control;
-import GUI.Gui;
-import Model.Connection.Fasade;
-import Model.Connection.PresentData;
+import Model.Students.MarkStudent;
 import Model.Students.PresentStudent;
-import Model.Students.Student;
 
-import javax.jws.WebParam;
 import java.util.ArrayList;
 import java.util.Vector;
 
 public class ModelFasade implements Fasade {
 
-    private PresentData pd;
+    private PresentData presentData;
+    private MarkData markData;
     private boolean error = true;
     Conect conect;
 
@@ -24,10 +20,10 @@ public class ModelFasade implements Fasade {
         conect = new Conect();
         if(conect.newConection()){
             error = false;
-            pd = new PresentData(conect);
-            pd.readData();
+            presentData = new PresentData(conect);
+            presentData.readData();
             conect.disconect();
-            return pd.getStudentList();
+            return presentData.getStudentList();
 
         }else{
             error = true;
@@ -40,19 +36,34 @@ public class ModelFasade implements Fasade {
         conect = new Conect();
         if(conect.newConection()){
             error = false;
-            pd = new PresentData(conect);
-            error = pd.writeData(columnNames,data);
+            presentData = new PresentData(conect);
+            error = presentData.writeData(columnNames,data);
             System.out.println(error);
 
         }else{
             error = false;
-            System.out.println(error);
         }
     }
 
     @Override
-    public void getMarksData() {
+    public ArrayList<MarkStudent> getMarkData() {
 
+        conect = new Conect();
+        if(conect.newConection()){
+            error = false;
+            markData = new MarkData(conect);
+            markData.readData();
+            conect.disconect();
+            //System.out.println("Udało się zczytać xD");
+            return markData.getStudentList();
+
+        }else{
+            error = true;
+            return null;
+        }
+
+        /* ArrayList<MarkStudent> mark = new ArrayList<>();
+            return mark;*/
     }
 
     @Override

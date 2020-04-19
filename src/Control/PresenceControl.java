@@ -31,8 +31,8 @@ public class PresenceControl {
 
     private void zapisz() {
         model.writePresentData(presenceTable.getColumnNames(), presenceTable.getData());
-        if(!model.getError())
-             error = new DialogInfo(presence.getPresence(), "Wystąpił bład, nie zapisano danych.","Błąd!");
+        if (!model.getError())
+            error = new DialogInfo(presence.getPresence(), "Wystąpił bład, nie zapisano danych.", "Błąd!");
         if (frame.getBorder().getLayoutComponent(CENTER) != null)
             frame.remove(frame.getBorder().getLayoutComponent(CENTER));
         JPanel empty = new JPanel();
@@ -63,38 +63,40 @@ public class PresenceControl {
                 zapisz();
             } else if (source == presence.getPresent()) {
 
-                presenceTable.getPresent(tableListener, "+");
+                presenceTable.changeData(tableListener, "+");
 
             } else if (source == presence.getAbsent()) {
 
-                presenceTable.getPresent(tableListener, "-");
+                presenceTable.changeData(tableListener, "-");
 
             } else if (source == presence.getLate()) {
 
-                presenceTable.getPresent(tableListener, "S");
+                presenceTable.changeData(tableListener, "S");
 
             } else if (source == presence.getNewLesson()) {
 
-                NewLesson nl = new NewLesson(presence.getPresence());
+                Question nl = new Question(presence.getPresence(), 0);
                 String name = nl.getName();
                 if (name != null) {
-                    if(presenceTable.addNewColumn(name)){
+                    if (presenceTable.addNewColumn(name)) {
                         presence.setTableView();
-                    }else{
-                        error   = new DialogInfo(presence.getPresence(), "Taka lekcja już istnieje!", "Uwaga!");
+                    } else {
+                        error = new DialogInfo(presence.getPresence(), "Taka lekcja już istnieje, lub nie może być pusta!", "Uwaga!");
                     }
                 }
             } else if (source == presence.getDeleteLesson()) {
 
                 String column = presenceTable.getSelectedColumn(tableListener);
-                DialogInfo question = new DialogInfo(presence.getPresence(), "Czy jesteś pewny, że chcesz usinąć kolumnę " + column + "?", "Uwaga!");
+                DialogInfo question = new DialogInfo(presence.getPresence(), "Czy jesteś pewny, że chcesz usunąć kolumnę " + column + "?", "Uwaga!");
                 if (question.getChoice() == 0) {
-                    if (!presenceTable.deleteColumn(tableListener)) {
+                    if (presenceTable.deleteColumn(tableListener)) {
+                        presence.setTableView();
 
+                    } else {
                         question.setText("Nie można usunąć tej kolumny!");
                         question.show();
                     }
-                    presence.setTableView();
+
                 }
             }
         }

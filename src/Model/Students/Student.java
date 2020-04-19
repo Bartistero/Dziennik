@@ -7,7 +7,6 @@ public abstract class Student {
     String id;
     String name;
     String surname;
-    static ArrayList<String> lesson = new ArrayList<>();
 
     public Student(String number, String name, String surname) {
         this.id = number;
@@ -27,7 +26,5 @@ public abstract class Student {
         return surname;
     }
 
-    public static ArrayList<String> getLesson() {
-        return lesson;
-    }
+
 }

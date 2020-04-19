@@ -102,7 +102,6 @@ public class Presence extends JFrame {
         tab = new JPanel();
         tab.setLayout(new BorderLayout());
 
-
         table = new JTable(model);
         setTableView();
         tab.add(table.getTableHeader(), BorderLayout.PAGE_START);
@@ -145,11 +144,6 @@ public class Presence extends JFrame {
         table.setFont(new Font("Calibri", Font.PLAIN, 20));
     }
 
-    public JPanel showPresence() {
-
-        return presence;
-    }
-
     public JButton getPresent() {
 
         return present;
@@ -179,11 +173,6 @@ public class Presence extends JFrame {
         return presence;
     }
 
-    public BorderLayout getBorder() {
-
-        return border;
-    }
-
     public JButton getNewLesson() {
 
         return newLesson;
@@ -197,6 +186,7 @@ public class Presence extends JFrame {
 
         return table;
     }
+
 
 }
 

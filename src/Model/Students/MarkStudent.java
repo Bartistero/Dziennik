@@ -5,14 +5,19 @@ import java.util.ArrayList;
 
 public class MarkStudent extends Student {
 
-    private ArrayList<Integer> marks;
+    private ArrayList<String> marks;
+    private static ArrayList<String> markColumn = new ArrayList<>();
 
     public MarkStudent(String id, String name, String surrname){
         super(id,name,surrname);
-        marks = new ArrayList<Integer>();
+        marks = new ArrayList<String>();
     }
 
-    public ArrayList<Integer> getMarks() {
+    public ArrayList<String> getMarks() {
         return marks;
+    }
+
+    public static ArrayList<String> getMarkColumn() {
+        return markColumn;
     }
 }

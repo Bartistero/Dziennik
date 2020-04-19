@@ -10,8 +10,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class PresenceTable extends AbstractTableModel {
-
+public class PresenceTable extends AbstractTableModel implements Table {
 
     private static PresenceTable instance = null;
     private boolean edited = false;
@@ -28,6 +27,10 @@ public class PresenceTable extends AbstractTableModel {
         return instance;
     }
 
+    public void delete() {
+
+        instance = null;
+    }
 
     private PresenceTable(ArrayList<PresentStudent> sourceData) {
         this.sourceData = sourceData;
@@ -35,11 +38,6 @@ public class PresenceTable extends AbstractTableModel {
         data = new Vector<>();
         setColumnNames();
         setData();
-    }
-
-    public void delete(){
-
-        instance = null;
     }
 
     private void setColumnNames() {
@@ -51,7 +49,7 @@ public class PresenceTable extends AbstractTableModel {
             columnNames.add("nazwisko");
 
             for (int i = 3; i < size + 3; i++) {
-                columnNames.add(sourceData.get(0).getLesson().get(i-3));
+                columnNames.add(sourceData.get(0).getLesson().get(i - 3));
             }
         }
     }
@@ -61,8 +59,6 @@ public class PresenceTable extends AbstractTableModel {
         if (sourceData.size() > 0) {
             int sizeY = sourceData.size();
             int sizeX = sourceData.get(0).getPresent().size() + 3;
-            //data = new Object[sizeY][sizeX];
-
 
             for (int i = 0; i < sizeY; i++) {
                 Vector<String> rowVetor = new Vector<String>();
@@ -80,23 +76,26 @@ public class PresenceTable extends AbstractTableModel {
             }
         }
     }
-    public void getPresent(PresenceTable.TableListener listener,String s){
+
+    @Override
+    public void changeData(PresenceTable.TableListener listener, String s) {
 
         int column = listener.getColumn();
         int row = listener.getRow();
-        if(column>2){
-            data.get(row).set(column,s);
+        if (column > 2) {
+            data.get(row).set(column, s);
             this.fireTableDataChanged();
-            listener.setSelect(column,row+1);
+            listener.setSelect(column, row + 1);
             edited = true;
         }
-
     }
+
+    @Override
     public boolean addNewColumn(String name) {
 
         boolean add = true;
-        for (int i = 0; i < columnNames.size(); i++) {
-            if (columnNames.get(i).equals(name))
+        for (int i = 0; i < columnNames.size() && add == true; i++) {
+            if (columnNames.get(i).equals(name) || name.isEmpty())
                 add = false;
         }
         if (add) {
@@ -107,6 +106,7 @@ public class PresenceTable extends AbstractTableModel {
             }
             this.fireTableStructureChanged();
             edited = true;
+
             return true;
         } else {
 
@@ -114,6 +114,7 @@ public class PresenceTable extends AbstractTableModel {
         }
     }
 
+    @Override
     public boolean deleteColumn(PresenceTable.TableListener listener) {
 
         int column = listener.getColumn();
@@ -123,14 +124,15 @@ public class PresenceTable extends AbstractTableModel {
                 data.get(i).remove(column);
 
             this.fireTableStructureChanged();
-            listener.setSelect(0,0);
+            listener.setSelect(0, 0);
             edited = true;
 
             return true;
-        }else return false;
+        } else return false;
 
     }
 
+    @Override
     public String getSelectedColumn(PresenceTable.TableListener listener) {
 
         return columnNames.get(listener.getColumn());
@@ -160,38 +162,6 @@ public class PresenceTable extends AbstractTableModel {
         return columnNames.get(column);
     }
 
-    public static class TableListener implements ListSelectionListener {
-
-        JTable table;
-        int row;
-        int column;
-
-
-        public TableListener(JTable table) {
-            this.table = table;
-            table.addRowSelectionInterval(4,5);
-        }
-
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            column = table.getSelectedColumn();
-            row = table.getSelectedRow();
-        }
-        public void setSelect(int column,int row){
-            table.changeSelection(row,column,false,true);
-        }
-
-        public int getColumn() {
-
-            return column;
-        }
-
-        public int getRow() {
-
-            return row;
-        }
-
-    }
 
     public Vector<String> getColumnNames() {
         return columnNames;

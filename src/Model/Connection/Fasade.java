@@ -1,5 +1,6 @@
 package Model.Connection;
 
+import Model.Students.MarkStudent;
 import Model.Students.PresentStudent;
 import Model.Students.Student;
 
@@ -11,7 +12,7 @@ public interface Fasade {
 
     public void writePresentData(Vector<String> columnNames, Vector<Vector<String>> data);
 
-    public void getMarksData();
+    public ArrayList<MarkStudent> getMarkData();
 
     public void writeMarksData();
 

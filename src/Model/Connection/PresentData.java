@@ -27,7 +27,6 @@ public class PresentData {
         this.conect = conect;
         statement = conect.getStatement();
         resultSet = conect.getResultSet();
-
     }
 
     protected boolean readData() {
@@ -57,7 +56,7 @@ public class PresentData {
                 }
                 column = false;
                 studentList.add(st);
-                studentList.get(0).getPresent().size();
+               // studentList.get(0).getPresent().size();
             }
         } catch (Exception e) {
             return false;

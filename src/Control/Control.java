@@ -1,7 +1,9 @@
 package Control;
 
 import GUI.*;
+import Model.Students.MarkStudent;
 import Model.Students.PresentStudent;
+import Model.Table.MarkTable;
 import Model.Table.PresenceTable;
 //import PresenceControl;
 import Model.Connection.ModelFasade;
@@ -17,10 +19,16 @@ public class Control<Static> {
 
     private Gui frame;
     private JPanel center;
-    private PresenceControl presenceControl;
     private ModelFasade model;
-    private PresenceTable tableModel;
+
+    private PresenceControl presenceControl;
+    private PresenceTable presenceTable;
     private  Presence pr;
+
+    private MarkControl markControl;
+    private MarkTable markTable;
+    private Mark mark;
+
 
     public Control(Gui frame, ModelFasade model) {
         this.frame = frame;
@@ -41,10 +49,10 @@ public class Control<Static> {
                 ArrayList<PresentStudent> sourceData;
                 sourceData = model.getPresentData();
                 if (!model.getError()) {
-                    tableModel = PresenceTable.getInstance(sourceData);
-                    pr = new Presence(tableModel);
-                    presenceControl = new PresenceControl(frame, model, pr, tableModel);
-                    center = pr.showPresence();
+                    presenceTable = PresenceTable.getInstance(sourceData);
+                    pr = new Presence(presenceTable);
+                    presenceControl = new PresenceControl(frame, model, pr, presenceTable);
+                    center = pr.getPresence();
                     frame.add(center);
                     frame.getBorder().addLayoutComponent(center, CENTER);
                     frame.revalidate();
@@ -56,11 +64,21 @@ public class Control<Static> {
                 if (frame.getBorder().getLayoutComponent(CENTER) != null)
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));
 
-                Marks pr = new Marks();
-                center = pr.showMarks();
-                frame.add(center);
-                frame.getBorder().addLayoutComponent(center, CENTER);
-                frame.revalidate();
+                ArrayList<MarkStudent> sourceData;
+                sourceData = model.getMarkData();
+
+                if (!model.getError()) {
+                    markTable = MarkTable.getInstance(sourceData);
+                    Mark mr= new Mark(markTable);
+                    markControl = new MarkControl(frame, model, mr, markTable);
+                    center = mr.showMarks();
+                    frame.add(center);
+                    frame.getBorder().addLayoutComponent(center, CENTER);
+                    frame.revalidate();
+                } else {
+                    error();
+                    System.out.println("nie działąm");
+                }
             } else if (source == frame.getNewPupil()) {
                 if (frame.getBorder().getLayoutComponent(CENTER) != null)
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));
@@ -74,6 +92,7 @@ public class Control<Static> {
         }
     }
     public  void error(){
+
         DialogInfo error = new DialogInfo(center,"Nie nawiązano połączenia z bazą danych","Błąd!");
     }
 }
