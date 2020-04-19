@@ -37,7 +37,17 @@ public class ModelFasade implements Fasade {
 
     @Override
     public void writePresentData(Vector<String> columnNames, Vector<Vector<String>> data) {
+        conect = new Conect();
+        if(conect.newConection()){
+            error = false;
+            pd = new PresentData(conect);
+            error = pd.writeData(columnNames,data);
+            System.out.println(error);
 
+        }else{
+            error = false;
+            System.out.println(error);
+        }
     }
 
     @Override

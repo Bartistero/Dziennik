@@ -16,6 +16,7 @@ public class PresenceControl {
     private Gui frame;
     private ModelFasade model;
     private PresenceTable presenceTable;
+    private DialogInfo error;
     PresenceTable.TableListener tableListener;
 
 
@@ -30,6 +31,8 @@ public class PresenceControl {
 
     private void zapisz() {
         model.writePresentData(presenceTable.getColumnNames(), presenceTable.getData());
+        if(!model.getError())
+             error = new DialogInfo(presence.getPresence(), "Wystąpił bład, nie zapisano danych.","Błąd!");
         if (frame.getBorder().getLayoutComponent(CENTER) != null)
             frame.remove(frame.getBorder().getLayoutComponent(CENTER));
         JPanel empty = new JPanel();
@@ -78,7 +81,7 @@ public class PresenceControl {
                     if(presenceTable.addNewColumn(name)){
                         presence.setTableView();
                     }else{
-                        DialogInfo error = new DialogInfo(presence.getPresence(), "Taka lekcja już istnieje!", "Uwaga!");
+                        error   = new DialogInfo(presence.getPresence(), "Taka lekcja już istnieje!", "Uwaga!");
                     }
                 }
             } else if (source == presence.getDeleteLesson()) {
@@ -91,7 +94,6 @@ public class PresenceControl {
                         question.setText("Nie można usunąć tej kolumny!");
                         question.show();
                     }
-                    ;
                     presence.setTableView();
                 }
             }
