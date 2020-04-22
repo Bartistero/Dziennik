@@ -23,7 +23,7 @@ public class Control<Static> {
 
     private PresenceControl presenceControl;
     private PresenceTable presenceTable;
-    private  Presence pr;
+    private Presence pr;
 
     private MarkControl markControl;
     private MarkTable markTable;
@@ -69,7 +69,7 @@ public class Control<Static> {
 
                 if (!model.getError()) {
                     markTable = MarkTable.getInstance(sourceData);
-                    Mark mr= new Mark(markTable);
+                    Mark mr = new Mark(markTable);
                     markControl = new MarkControl(frame, model, mr, markTable);
                     center = mr.showMarks();
                     frame.add(center);
@@ -91,9 +91,10 @@ public class Control<Static> {
             }
         }
     }
-    public  void error(){
 
-        DialogInfo error = new DialogInfo(center,"Nie nawiązano połączenia z bazą danych","Błąd!");
+    public void error() {
+
+        DialogInfo error = new DialogInfo(center, "Nie nawiązano połączenia z bazą danych", "Błąd!");
     }
 }
 

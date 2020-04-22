@@ -15,17 +15,18 @@ public class ModelFasade implements Fasade {
 
 
     @Override
-    public ArrayList<PresentStudent>  getPresentData() {
+    public ArrayList<PresentStudent> getPresentData() {
 
+        error = true;
         conect = new Conect();
-        if(conect.newConection()){
+        if (conect.newConection()) {
             error = false;
             presentData = new PresentData(conect);
             presentData.readData();
             conect.disconect();
             return presentData.getStudentList();
 
-        }else{
+        } else {
             error = true;
             return null;
         }
@@ -33,37 +34,52 @@ public class ModelFasade implements Fasade {
 
     @Override
     public void writePresentData(Vector<String> columnNames, Vector<Vector<String>> data) {
+
+        error = true;
         conect = new Conect();
-        if(conect.newConection()){
+        if (conect.newConection()) {
             error = false;
             presentData = new PresentData(conect);
-            error = presentData.writeData(columnNames,data);
+            error = presentData.writeData(columnNames, data);
             System.out.println(error);
 
-        }else{
+        } else {
             error = false;
         }
     }
 
     @Override
     public ArrayList<MarkStudent> getMarkData() {
-
+        error = true;
         conect = new Conect();
-        if(conect.newConection()){
+        if (conect.newConection()) {
             error = false;
             markData = new MarkData(conect);
             markData.readData();
             conect.disconect();
-            //System.out.println("Udało się zczytać xD");
             return markData.getStudentList();
 
-        }else{
+        } else {
             error = true;
             return null;
         }
 
-        /* ArrayList<MarkStudent> mark = new ArrayList<>();
-            return mark;*/
+    }
+
+    @Override
+    public void writeMarksData(Vector<String> columnNames, Vector<Vector<String>> data) {
+
+        error = true;
+        conect = new Conect();
+        if (conect.newConection()) {
+            error = false;
+            markData = new MarkData(conect);
+            error = markData.writeData(columnNames, data);
+            System.out.println(error);
+
+        } else {
+            error = false;
+        }
     }
 
     @Override
@@ -71,10 +87,6 @@ public class ModelFasade implements Fasade {
 
     }
 
-    @Override
-    public void writeMarksData() {
-
-    }
 
     @Override
     public void writeConfigData() {

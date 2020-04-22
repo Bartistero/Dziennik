@@ -6,7 +6,7 @@ public class Conect {
 
     Connection connection = null;
     private Statement statement = null;
-    private ResultSet resultSet = null ;
+    private ResultSet resultSet = null;
 
     public boolean newConection() {
 
@@ -20,13 +20,13 @@ public class Conect {
 
     public boolean disconect() {
         try {
-            if(resultSet != null){
+            if (resultSet != null) {
                 resultSet.close();
             }
-            if(statement != null){
+            if (statement != null) {
                 statement.close();
             }
-            if(connection != null){
+            if (connection != null) {
                 connection.close();
             }
             return true;
@@ -34,6 +34,7 @@ public class Conect {
             return false;
         }
     }
+
     public Connection getConnection() {
         return connection;
     }

@@ -10,18 +10,18 @@ public class PresentStudent extends Student {
     private ArrayList<String> present;
     static ArrayList<String> lesson = new ArrayList<>();
 
-   public PresentStudent(String id, String name, String surrname){
-       super(id,name,surrname);
-       present = new ArrayList<>();
-   }
+    public PresentStudent(String id, String name, String surrname) {
+        super(id, name, surrname);
+        present = new ArrayList<>();
+    }
 
     public static ArrayList<String> getLesson() {
 
-       return lesson;
+        return lesson;
     }
 
     public ArrayList<String> getPresent() {
 
-       return present;
+        return present;
     }
 }

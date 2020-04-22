@@ -33,12 +33,16 @@ public class PresenceControl {
         model.writePresentData(presenceTable.getColumnNames(), presenceTable.getData());
         if (!model.getError())
             error = new DialogInfo(presence.getPresence(), "Wystąpił bład, nie zapisano danych.", "Błąd!");
-        if (frame.getBorder().getLayoutComponent(CENTER) != null)
+
+        else if (frame.getBorder().getLayoutComponent(CENTER) != null) {
+
+            error = new DialogInfo(presence.getPresence(), "Dane zostały pomyślnie zapisane", "Sukces!");
             frame.remove(frame.getBorder().getLayoutComponent(CENTER));
-        JPanel empty = new JPanel();
-        frame.add(empty, CENTER);
-        presenceTable.delete();
-        frame.revalidate();
+            JPanel empty = new JPanel();
+            frame.add(empty, CENTER);
+            presenceTable.delete();
+            frame.revalidate();
+        }
     }
 
     class listener implements ActionListener {

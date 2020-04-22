@@ -7,8 +7,11 @@ import javax.swing.event.ListSelectionListener;
 public interface Table {
 
     public boolean addNewColumn(String name);
+
     public void changeData(PresenceTable.TableListener listener, String s);
+
     public boolean deleteColumn(PresenceTable.TableListener listener);
+
     public String getSelectedColumn(PresenceTable.TableListener listener);
 
 
@@ -21,7 +24,7 @@ public interface Table {
 
         public TableListener(JTable table) {
             this.table = table;
-            table.addRowSelectionInterval(0,0);
+            table.addRowSelectionInterval(0, 0);
         }
 
         @Override
@@ -29,9 +32,10 @@ public interface Table {
             column = table.getSelectedColumn();
             row = table.getSelectedRow();
         }
-        public void setSelect(int column,int row){
 
-            table.changeSelection(row,column,false,true);
+        public void setSelect(int column, int row) {
+
+            table.changeSelection(row, column, false, true);
         }
 
         public int getColumn() {

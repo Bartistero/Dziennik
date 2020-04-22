@@ -31,16 +31,18 @@ public class MarkControl {
     }
 
     private void zapisz() {
-       /* model.writePresentData(presenceTable.getColumnNames(), presenceTable.getData());
+        model.writeMarksData(markTable.getColumnNames(), markTable.getData());
         if (!model.getError())
-            error = new DialogInfo(presence.getPresence(), "Wystąpił bład, nie zapisano danych.", "Błąd!");
-        if (frame.getBorder().getLayoutComponent(CENTER) != null)
+            error = new DialogInfo(mark.showMarks(), "Wystąpił bład, nie zapisano danych.", "Błąd!");
+
+        else if (frame.getBorder().getLayoutComponent(CENTER) != null) {
+            error = new DialogInfo(mark.showMarks(), "Dane zostały pomyślnie zapisane", "Sukces!");
             frame.remove(frame.getBorder().getLayoutComponent(CENTER));
-        JPanel empty = new JPanel();
-        frame.add(empty, CENTER);
-        presenceTable.delete();
-        frame.revalidate();*/
-        System.out.println("Tutaj bd zapis");
+            JPanel empty = new JPanel();
+            frame.add(empty, CENTER);
+            markTable.delete();
+            frame.revalidate();
+        }
     }
 
     class listener implements ActionListener {
@@ -107,7 +109,7 @@ public class MarkControl {
                 }
 
             } else if (source == mark.getSave()) {
-                    zapisz();
+                zapisz();
             } else if (source == mark.getCancel()) {
                 NoSave save = new NoSave(mark.showMarks());
                 int x = save.getChoice();

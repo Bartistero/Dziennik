@@ -10,7 +10,7 @@ import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class MarkTable extends AbstractTableModel  implements Table{
+public class MarkTable extends AbstractTableModel implements Table {
 
     private static MarkTable instance = null;
     private ArrayList<MarkStudent> sourceData;
@@ -25,11 +25,12 @@ public class MarkTable extends AbstractTableModel  implements Table{
         }
         return instance;
     }
-    public void delete(){
+
+    public void delete() {
         instance = null;
     }
 
-    public MarkTable(ArrayList<MarkStudent> sourceData){
+    public MarkTable(ArrayList<MarkStudent> sourceData) {
 
         this.sourceData = sourceData;
         columnNames = new Vector<>();
@@ -47,9 +48,10 @@ public class MarkTable extends AbstractTableModel  implements Table{
             columnNames.add("nazwisko");
 
             for (int i = 3; i < size + 3; i++)
-                columnNames.add(sourceData.get(0).getMarkColumn().get(i-3));
+                columnNames.add(sourceData.get(0).getMarkColumn().get(i - 3));
         }
     }
+
     private void setData() {
 
         if (sourceData.size() > 0) {
@@ -75,22 +77,22 @@ public class MarkTable extends AbstractTableModel  implements Table{
     }
 
     @Override
-    public void changeData(PresenceTable.TableListener listener,String s){
+    public void changeData(PresenceTable.TableListener listener, String s) {
         int column = listener.getColumn();
         int row = listener.getRow();
 
-        if(column>2){
+        if (column > 2) {
             data.get(row).set(column, s);
             this.fireTableDataChanged();
             listener.setSelect(column, row + 1);
             edited = true;
-            System.out.println("Czy się wykonałem?");
         }
 
     }
 
     @Override
-     public boolean addNewColumn(String name){
+    public boolean addNewColumn(String name) {
+
         boolean add = true;
         for (int i = 0; i < columnNames.size() && add == true; i++) {
             if (columnNames.get(i).equals(name) || name.isEmpty())
@@ -113,6 +115,7 @@ public class MarkTable extends AbstractTableModel  implements Table{
 
     @Override
     public boolean deleteColumn(TableListener listener) {
+
         int column = listener.getColumn();
         if (column > 2) {
             columnNames.remove(column);
@@ -154,4 +157,11 @@ public class MarkTable extends AbstractTableModel  implements Table{
         return columnNames.get(column);
     }
 
+    public Vector<Vector<String>> getData() {
+        return data;
+    }
+
+    public Vector<String> getColumnNames() {
+        return columnNames;
+    }
 }
