@@ -14,6 +14,9 @@ public class Main {
         ModelFasade model = new ModelFasade();
 
         Control ct = new Control(frame, model);
+       /*ModelFasade fasade = new ModelFasade();
+       fasade.getConfigData();*/
+
 
 
     }

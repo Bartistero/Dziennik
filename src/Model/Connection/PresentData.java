@@ -39,13 +39,13 @@ public class PresentData {
 
         try {
             statement = conect.getConnection().createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM obecnosc");
+            resultSet = statement.executeQuery("SELECT * FROM present");
             int columns = resultSet.getMetaData().getColumnCount();
             while (resultSet.next()) {
 
-                id = resultSet.getString("ID");
-                name = resultSet.getString("Name");
-                surname = resultSet.getString("Surrname");
+                id = resultSet.getString(1);
+                name = resultSet.getString(2);
+                surname = resultSet.getString(3);
                 st = new PresentStudent(id, name, surname);
 
                 for (int i = 4; i <= columns; i++) {
@@ -56,12 +56,12 @@ public class PresentData {
                 }
                 column = false;
                 studentList.add(st);
-                // studentList.get(0).getPresent().size();
+
             }
-        } catch (Exception e) {
             return false;
+        } catch (Exception e) {
+            return true; //return the problem with read data
         }
-        return true;
     }
 
     protected boolean writeData(Vector<String> columnNames, Vector<Vector<String>> data) {
@@ -75,12 +75,12 @@ public class PresentData {
 
 
             statement = conect.getConnection().createStatement();
-            resultSet = statement.executeQuery("SELECT count(*) FROM information_schema.columns WHERE table_name = \"obecnosc\"");
+            resultSet = statement.executeQuery("SELECT count(*) FROM information_schema.columns WHERE table_name = \"present\"");
             resultSet.next();
 
             int columnSizeDataBase = resultSet.getInt("count(*)");
 
-            query = "SHOW COLUMNS FROM obecnosc";
+            query = "SHOW COLUMNS FROM present";
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 name.add(resultSet.getString(1));
@@ -95,7 +95,7 @@ public class PresentData {
                         delete = true;
                 }
                 if (!delete) {
-                    query = "ALTER TABLE `obecnosc` DROP `" + name.get(j) + "`";
+                    query = "ALTER TABLE `present` DROP `" + name.get(j) + "`";
                     statement.executeUpdate(query);
                 }
             }
@@ -103,7 +103,7 @@ public class PresentData {
             if (columnSizeTable > columnSizeDataBase) {
 
                 for (int i = columnSizeDataBase; i < columnSizeTable; i++) {
-                    query = "ALTER TABLE obecnosc ADD `" + columnNames.get(i) + "` text";
+                    query = "ALTER TABLE present ADD `" + columnNames.get(i) + "` text";
                     System.out.println(query);
                     statement.executeUpdate(query);
                 }
@@ -112,7 +112,7 @@ public class PresentData {
             for (int i = 3; i < columnNames.size(); i++)
                 for (int j = 0; j < data.size(); j++) {
 
-                    query = "UPDATE obecnosc SET `" + columnNames.get(i) + "` = \"" + data.get(j).get(i) + "\" WHERE Id = " + j;
+                    query = "UPDATE present SET `" + columnNames.get(i) + "` = \"" + data.get(j).get(i) + "\" WHERE Id = " + j;
                     int n2 = statement.executeUpdate(query);
                 }
         } catch (Exception e) {

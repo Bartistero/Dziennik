@@ -36,13 +36,13 @@ public class MarkData {
 
         try {
             statement = conect.getConnection().createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM oceny");
+            resultSet = statement.executeQuery("SELECT * FROM marks");
             int columns = resultSet.getMetaData().getColumnCount();
             while (resultSet.next()) {
 
-                id = resultSet.getString("ID");
-                name = resultSet.getString("Name");
-                surname = resultSet.getString("Surrname");
+                id = resultSet.getString(1);
+                name = resultSet.getString(2);
+                surname = resultSet.getString(3);
                 markStudent = new MarkStudent(id, name, surname);
 
                 for (int i = 4; i <= columns; i++) {
@@ -55,12 +55,11 @@ public class MarkData {
                 studentList.add(markStudent);
                 //studentList.get(0).getPresent().size();
             }
-
+            return false;
         } catch (Exception e) {
             System.out.println("Coś nie pykło :(");
-            return false;
+            return true; //return the problem with read data
         }
-        return true;
     }
 
 
@@ -74,12 +73,12 @@ public class MarkData {
             int columnSizeTable = columnNames.size();
 
             statement = conect.getConnection().createStatement();
-            resultSet = statement.executeQuery("SELECT count(*) FROM information_schema.columns WHERE table_name = \"oceny\"");
+            resultSet = statement.executeQuery("SELECT count(*) FROM information_schema.columns WHERE table_name = \"marks\"");
             resultSet.next();
 
             int columnSizeDataBase = resultSet.getInt("count(*)");
 
-            query = "SHOW COLUMNS FROM oceny";
+            query = "SHOW COLUMNS FROM marks";
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 name.add(resultSet.getString(1));
@@ -94,7 +93,7 @@ public class MarkData {
                         delete = true;
                 }
                 if (!delete) {
-                    query = "ALTER TABLE `oceny` DROP `" + name.get(j) + "`";
+                    query = "ALTER TABLE `marks` DROP `" + name.get(j) + "`";
                     System.out.println(query);
                     statement.executeUpdate(query);
                 }
@@ -103,7 +102,7 @@ public class MarkData {
             if (columnSizeTable > columnSizeDataBase) {
 
                 for (int i = columnSizeDataBase; i < columnSizeTable; i++) {
-                    query = "ALTER TABLE oceny ADD `" + columnNames.get(i) + "` text";
+                    query = "ALTER TABLE marks ADD `" + columnNames.get(i) + "` text";
                     System.out.println(query);
                     statement.executeUpdate(query);
                 }
@@ -112,9 +111,8 @@ public class MarkData {
             for (int i = 3; i < columnNames.size(); i++)
                 for (int j = 0; j < data.size(); j++) {
 
-                    query = "UPDATE oceny SET `" + columnNames.get(i) + "` = \"" + data.get(j).get(i) + "\" WHERE Id = " + j;
-                    int n2 = statement.executeUpdate(query);
-                    System.out.println(n2);
+                    query = "UPDATE marks SET `" + columnNames.get(i) + "` = \"" + data.get(j).get(i) + "\" WHERE Id = " + j;
+                    statement.executeUpdate(query);
                 }
         } catch (Exception e) {
             System.out.println(e);

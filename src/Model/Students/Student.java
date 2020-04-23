@@ -6,12 +6,16 @@ public abstract class Student {
 
     String id;
     String name;
-    String surname;
+    String surrname;
 
     public Student(String number, String name, String surname) {
         this.id = number;
         this.name = name;
-        this.surname = surname;
+        this.surrname = surname;
+    }
+
+    public Student(){
+
     }
 
     public String getid() {
@@ -23,7 +27,7 @@ public abstract class Student {
     }
 
     public String getSurname() {
-        return surname;
+        return surrname;
     }
 
 

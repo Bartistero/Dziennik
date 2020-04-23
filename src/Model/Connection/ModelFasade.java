@@ -1,5 +1,7 @@
 package Model.Connection;
 
+import GUI.Configuration;
+import Model.Students.ConfigurationStudent;
 import Model.Students.MarkStudent;
 import Model.Students.PresentStudent;
 
@@ -10,6 +12,7 @@ public class ModelFasade implements Fasade {
 
     private PresentData presentData;
     private MarkData markData;
+    private ConfigurationData configurationData;
     private boolean error = true;
     Conect conect;
 
@@ -22,7 +25,7 @@ public class ModelFasade implements Fasade {
         if (conect.newConection()) {
             error = false;
             presentData = new PresentData(conect);
-            presentData.readData();
+            error = presentData.readData();
             conect.disconect();
             return presentData.getStudentList();
 
@@ -55,7 +58,7 @@ public class ModelFasade implements Fasade {
         if (conect.newConection()) {
             error = false;
             markData = new MarkData(conect);
-            markData.readData();
+            error = markData.readData();
             conect.disconect();
             return markData.getStudentList();
 
@@ -83,8 +86,24 @@ public class ModelFasade implements Fasade {
     }
 
     @Override
-    public void getConfigData() {
+    public ArrayList<ConfigurationStudent> getConfigData() {
+        error = true;
+        conect = new Conect();
+        if (conect.newConection()) {
+            error = false;
+            configurationData = new ConfigurationData(conect);
+            error = configurationData.readData();
+            conect.disconect();
+            for(ConfigurationStudent c : configurationData.getStudentList()){
 
+                System.out.println(configurationData.getStudentList().get(0).getid());
+            }
+            return configurationData.getStudentList();
+
+        } else {
+            error = true;
+            return null;
+        }
     }
 
 
