@@ -1,11 +1,18 @@
 package GUI;
 
+import Control.JTreeControl;
+import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
+
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.Vector;
 
 public class Configuration extends JFrame {
 
@@ -30,28 +37,35 @@ public class Configuration extends JFrame {
     private JTextField tMail;
 
     private JTree tree;
+    private JTreeControl control;
 
     private DefaultMutableTreeNode root;
 
 
-    public Configuration() {
+    public Configuration(JTreeControl control) {
+        this.control = control;
         showFrame();
+        tree = new JTree();
     }
 
-    private void showFrame(){
+    private void showFrame() {
 
         configuration.setLayout(new BorderLayout());
 
         //Tree panel
         group = new JPanel();
         group.setLayout(new BorderLayout());
-        root = new DefaultMutableTreeNode("Studenci");
-        tree = new JTree(root);
-        root.add(new DefaultMutableTreeNode("Bartosz Sterniczuk"));
-        root.add(new DefaultMutableTreeNode("Jan Kowalski"));
-        root.add(new DefaultMutableTreeNode("Jan Kowalski"));
 
-        group.add(new JScrollPane(tree));
+
+        tree = (control.getTree());
+        tree.setEditable(true);
+        tree.getSelectionModel().setSelectionMode
+                (TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.setShowsRootHandles(true);
+
+
+        group.add(tree);
+
         configuration.add(group, BorderLayout.WEST);
 
         //Left-option panel
@@ -112,6 +126,8 @@ public class Configuration extends JFrame {
 
         tName = new JTextField();
         tName.setPreferredSize(new Dimension(500, 24));
+        tName.setEnabled(false);
+        tName.setDisabledTextColor(Color.BLACK);
 
         layout.putConstraint(SpringLayout.WEST, name, 25, SpringLayout.WEST, getContentPane());
         layout.putConstraint(SpringLayout.NORTH, name, 100, SpringLayout.NORTH, getContentPane());
@@ -127,6 +143,8 @@ public class Configuration extends JFrame {
 
         tSurrname = new JTextField();
         tSurrname.setPreferredSize(new Dimension(500, 24));
+        tSurrname.setEnabled(false);
+        tSurrname.setDisabledTextColor(Color.BLACK);
 
         layout.putConstraint(SpringLayout.WEST, surrname, 25, SpringLayout.WEST, getContentPane());
         layout.putConstraint(SpringLayout.NORTH, surrname, 50, SpringLayout.NORTH, name);
@@ -142,6 +160,8 @@ public class Configuration extends JFrame {
 
         tAddress = new JTextField();
         tAddress.setPreferredSize(new Dimension(500, 24));
+        tAddress.setEnabled(false);
+        tAddress.setDisabledTextColor(Color.BLACK);
 
         layout.putConstraint(SpringLayout.WEST, address, 25, SpringLayout.WEST, getContentPane());
         layout.putConstraint(SpringLayout.NORTH, address, 50, SpringLayout.NORTH, surrname);
@@ -157,6 +177,8 @@ public class Configuration extends JFrame {
 
         tPesel = new JTextField();
         tPesel.setPreferredSize(new Dimension(500, 24));
+        tPesel.setEnabled(false);
+        tPesel.setDisabledTextColor(Color.BLACK);
 
         layout.putConstraint(SpringLayout.WEST, pesel, 25, SpringLayout.WEST, getContentPane());
         layout.putConstraint(SpringLayout.NORTH, pesel, 50, SpringLayout.NORTH, address);
@@ -172,6 +194,8 @@ public class Configuration extends JFrame {
 
         tIndex = new JTextField();
         tIndex.setPreferredSize(new Dimension(500, 24));
+        tIndex.setEnabled(false);
+        tIndex.setDisabledTextColor(Color.BLACK);
 
         layout.putConstraint(SpringLayout.WEST, index, 25, SpringLayout.WEST, getContentPane());
         layout.putConstraint(SpringLayout.NORTH, index, 50, SpringLayout.NORTH, pesel);
@@ -187,6 +211,8 @@ public class Configuration extends JFrame {
 
         tTel = new JTextField();
         tTel.setPreferredSize(new Dimension(500, 24));
+        tTel.setEnabled(false);
+        tTel.setDisabledTextColor(Color.BLACK);
 
         layout.putConstraint(SpringLayout.WEST, tel, 25, SpringLayout.WEST, getContentPane());
         layout.putConstraint(SpringLayout.NORTH, tel, 50, SpringLayout.NORTH, index);
@@ -202,6 +228,8 @@ public class Configuration extends JFrame {
 
         tMail = new JTextField();
         tMail.setPreferredSize(new Dimension(500, 24));
+        tMail.setEnabled(false);
+        tMail.setDisabledTextColor(Color.BLACK);
 
         layout.putConstraint(SpringLayout.WEST, mail, 25, SpringLayout.WEST, getContentPane());
         layout.putConstraint(SpringLayout.NORTH, mail, 50, SpringLayout.NORTH, tel);
@@ -214,8 +242,70 @@ public class Configuration extends JFrame {
         configuration.add(center, BorderLayout.CENTER);
     }
 
+    public void addListenner(ActionListener listener) {
+
+
+        newPupil.addActionListener(listener);
+        edit.addActionListener(listener);
+        delete.addActionListener(listener);
+        save.addActionListener(listener);
+        cancel.addActionListener(listener);
+
+    }
+
+    public JButton getNewPupil() {
+        return newPupil;
+    }
+
+    public JButton getEdit() {
+        return edit;
+    }
+
+    public JButton getDelete() {
+        return delete;
+    }
+
+    public JButton getSave() {
+        return save;
+    }
+
+    public JButton getCancel() {
+        return cancel;
+    }
+
     public JPanel showConfiguration() {
         return configuration;
     }
 
+    public JTree getTree() {
+        return tree;
+    }
+
+    public JTextField gettName() {
+        return tName;
+    }
+
+    public JTextField gettSurrname() {
+        return tSurrname;
+    }
+
+    public JTextField gettAddress() {
+        return tAddress;
+    }
+
+    public JTextField gettPesel() {
+        return tPesel;
+    }
+
+    public JTextField gettIndex() {
+        return tIndex;
+    }
+
+    public JTextField gettTel() {
+        return tTel;
+    }
+
+    public JTextField gettMail() {
+        return tMail;
+    }
 }

@@ -111,12 +111,11 @@ public class PresentData {
             //write data
             for (int i = 3; i < columnNames.size(); i++)
                 for (int j = 0; j < data.size(); j++) {
-
                     query = "UPDATE present SET `" + columnNames.get(i) + "` = \"" + data.get(j).get(i) + "\" WHERE Id = " + j;
                     int n2 = statement.executeUpdate(query);
                 }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return false;
 
         }

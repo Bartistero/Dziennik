@@ -88,4 +88,7 @@ public class ConfigurationStudent extends Student {
             return configurationStudent;
         }
     }
+    public String toString() {
+        return getid() + "." + getName() + " " +  getSurname();
+    }
 }

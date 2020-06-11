@@ -4,6 +4,7 @@ import GUI.Configuration;
 import Model.Students.ConfigurationStudent;
 import Model.Students.MarkStudent;
 import Model.Students.PresentStudent;
+import Model.Students.Student;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -94,10 +95,6 @@ public class ModelFasade implements Fasade {
             configurationData = new ConfigurationData(conect);
             error = configurationData.readData();
             conect.disconect();
-            for(ConfigurationStudent c : configurationData.getStudentList()){
-
-                System.out.println(configurationData.getStudentList().get(0).getid());
-            }
             return configurationData.getStudentList();
 
         } else {

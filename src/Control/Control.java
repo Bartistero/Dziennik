@@ -29,6 +29,10 @@ public class Control<Static> {
     private MarkTable markTable;
     private Mark mark;
 
+    private Configuration configuration;
+    private JTreeControl treeControl;
+    private ConfigurationControl configurationControl;
+
 
     public Control(Gui frame, ModelFasade model) {
         this.frame = frame;
@@ -69,9 +73,9 @@ public class Control<Static> {
 
                 if (!model.getError()) {
                     markTable = MarkTable.getInstance(sourceData);
-                    Mark mr = new Mark(markTable);
-                    markControl = new MarkControl(frame, model, mr, markTable);
-                    center = mr.showMarks();
+                    mark = new Mark(markTable);
+                    markControl = new MarkControl(frame, model, mark, markTable);
+                    center = mark.showMarks();
                     frame.add(center);
                     frame.getBorder().addLayoutComponent(center, CENTER);
                     frame.revalidate();
@@ -83,8 +87,11 @@ public class Control<Static> {
                 if (frame.getBorder().getLayoutComponent(CENTER) != null)
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));
 
-                Configuration pr = new Configuration();
-                center = pr.showConfiguration();
+
+                treeControl = new JTreeControl(model);
+                configuration = new Configuration(treeControl);
+                configurationControl = new ConfigurationControl(frame,model, configuration,treeControl);
+                center = configuration.showConfiguration();
                 frame.add(center);
                 frame.getBorder().addLayoutComponent(center, CENTER);
                 frame.revalidate();
@@ -95,6 +102,10 @@ public class Control<Static> {
     public void error() {
 
         DialogInfo error = new DialogInfo(center, "Nie nawiązano połączenia z bazą danych", "Błąd!");
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
     }
 }
 
