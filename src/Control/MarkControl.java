@@ -32,7 +32,7 @@ public class MarkControl {
 
     private void zapisz() {
         model.writeMarksData(markTable.getColumnNames(), markTable.getData());
-        if (!model.getError())
+         if (!model.getError())
             error = new DialogInfo(mark.showMarks(), "Wystąpił bład, nie zapisano danych.", "Błąd!");
 
         else if (frame.getBorder().getLayoutComponent(CENTER) != null) {

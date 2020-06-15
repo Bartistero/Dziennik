@@ -4,6 +4,7 @@ import Model.Students.ConfigurationStudent;
 import Model.Students.MarkStudent;
 import Model.Students.PresentStudent;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -18,6 +19,6 @@ public interface Fasade {
 
     public ArrayList<ConfigurationStudent> getConfigData();
 
-    public void writeConfigData();
+    public void writeConfigData(ArrayList<ConfigurationStudent> student);
 
 }

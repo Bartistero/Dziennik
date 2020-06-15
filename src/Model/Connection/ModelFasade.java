@@ -5,6 +5,7 @@ import Model.Students.ConfigurationStudent;
 import Model.Students.MarkStudent;
 import Model.Students.PresentStudent;
 import Model.Students.Student;
+import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -105,8 +106,18 @@ public class ModelFasade implements Fasade {
 
 
     @Override
-    public void writeConfigData() {
+    public void writeConfigData(ArrayList<ConfigurationStudent> list) {
+        error = true;
+        conect = new Conect();
+        if(conect.newConection()){
+            error = false;
+            configurationData = new ConfigurationData(conect);
+            error = configurationData.writeData(list);
+            conect.disconect();
 
+        }else{
+            error = true;
+        }
     }
 
     public boolean getError() {

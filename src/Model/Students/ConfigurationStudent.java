@@ -29,6 +29,22 @@ public class ConfigurationStudent extends Student {
         return eMail;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPESEL(String PESEL) {
+        this.PESEL = PESEL;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
+    }
+
     public static final class Builder{
 
         private String id;

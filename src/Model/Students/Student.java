@@ -30,5 +30,15 @@ public abstract class Student {
         return surrname;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setSurrname(String surrname) {
+        this.surrname = surrname;
+    }
 }

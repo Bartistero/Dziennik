@@ -4,28 +4,31 @@ import GUI.Configuration;
 import Model.Connection.ModelFasade;
 import Model.Students.ConfigurationStudent;
 import Model.Students.Student;
+import org.omg.PortableInterceptor.INACTIVE;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import java.util.ArrayList;
 
 public class JTreeControl {
 
     private JTree tree;
     private DefaultMutableTreeNode top;
-    private ModelFasade model;
+    private ArrayList<ConfigurationStudent> list;
     DefaultMutableTreeNode treeNode;
     int marked;
     ConfigurationStudent student;
 
-    public JTreeControl(ModelFasade model) {
-        this.model = model;
+    public JTreeControl(ArrayList<ConfigurationStudent> list) {
+
+        this.list = list;
         top = new DefaultMutableTreeNode("Studeneci");
         //add("0");
-        setTree(model.getConfigData());
+        setTree(list);
 
         tree = new JTree(top);
 
@@ -41,7 +44,7 @@ public class JTreeControl {
         });*/
     }
 
-    private void setTree(ArrayList<ConfigurationStudent> students) {
+    public void setTree(ArrayList<ConfigurationStudent> students) {
 
         for (int i = 0; i < students.size(); i++) {
             add(students.get(i));
@@ -49,29 +52,35 @@ public class JTreeControl {
     }
 
 
-    private void add(ConfigurationStudent student) {
+    public void add(ConfigurationStudent student) {
         treeNode = new DefaultMutableTreeNode(student);
         top.add(treeNode);
     }
 
-    /*private void deleteElement() {
+    public void deleteElement(DefaultMutableTreeNode node,ConfigurationStudent student) {
 
-        //top.remove(index);
-        update();
-    }*/
+       /* DefaultMutableTreeNode node = new DefaultMutableTreeNode();
+        node.add((MutableTreeNode) student);*/
+       list.remove(student);
+        top.remove(node);
+    }
 
 
-    private void update() {
+    public void update() {
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
         model.reload(root);
     }
 
-    public ConfigurationStudent getStudent() {
+    private ConfigurationStudent getStudent() {
         return student;
     }
 
     public JTree getTree() {
         return tree;
+    }
+
+    public ArrayList<ConfigurationStudent> getList() {
+        return list;
     }
 }

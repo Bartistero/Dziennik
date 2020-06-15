@@ -273,7 +273,7 @@ public class Configuration extends JFrame {
         return cancel;
     }
 
-    public JPanel showConfiguration() {
+    public JPanel getConfiguration() {
         return configuration;
     }
 

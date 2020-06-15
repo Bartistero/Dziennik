@@ -1,6 +1,7 @@
 package Control;
 
 import GUI.*;
+import Model.Students.ConfigurationStudent;
 import Model.Students.MarkStudent;
 import Model.Students.PresentStudent;
 import Model.Table.MarkTable;
@@ -88,10 +89,11 @@ public class Control<Static> {
                     frame.remove(frame.getBorder().getLayoutComponent(CENTER));
 
 
-                treeControl = new JTreeControl(model);
+                ArrayList<ConfigurationStudent> list  = model.getConfigData();
+                treeControl = new JTreeControl(list);
                 configuration = new Configuration(treeControl);
                 configurationControl = new ConfigurationControl(frame,model, configuration,treeControl);
-                center = configuration.showConfiguration();
+                center = configuration.getConfiguration();
                 frame.add(center);
                 frame.getBorder().addLayoutComponent(center, CENTER);
                 frame.revalidate();
