@@ -112,7 +112,7 @@ public class ConfigurationControl {
             } else if (source == configuration.getDelete()) {
 
                 if(student !=null){
-                    DialogInfo dialogInfo = new DialogInfo(configuration.getConfiguration(), "Czy jest pewny, że chcesz usunąć ucznia: " + student.getName() + " "+student.getSurname() + "?", "Ostrzeżenie");
+                     DialogInfo dialogInfo = new DialogInfo(configuration.getConfiguration(), "Czy jest pewny, że chcesz usunąć ucznia: " + student.getName() + " "+student.getSurname() + "?", "Ostrzeżenie");
                     if(dialogInfo.getChoice() == 0){
                         if(student!=null){
                             System.out.println(student.getName());
@@ -125,13 +125,22 @@ public class ConfigurationControl {
                 }
 
             } else if (source == configuration.getSave()) {
-                    model.writeConfigData(treeControl.getList());
-                  /*  for(int i=0;i<treeControl.getList().size();i++){
-                        System.out.print( treeControl.getList().get(i).getid()+ " ");
-                    }
-                System.out.println("\n");*/
+
+                saveDataInDB();
 
             } else if (source == configuration.getCancel()) {
+
+                NoSave save = new NoSave(configuration.getConfiguration());
+                int x = save.getChoice();
+                if (x == 0) {
+                    if (frame.getBorder().getLayoutComponent(CENTER) != null)
+                        frame.remove(frame.getBorder().getLayoutComponent(CENTER));
+                    JPanel empty = new JPanel();
+                    frame.add(empty, CENTER);
+                    frame.revalidate();
+                } else if (x == 1) {
+                    saveDataInDB();
+                }
 
             }
         }
@@ -198,6 +207,20 @@ public class ConfigurationControl {
                     DialogInfo dialogInfo = new DialogInfo(configuration.getConfiguration(), "Dane zostały tymczasowo zapisane \n UWAGA!!! \n Na końcu należy zapisać dane do bazy danych!!!", "Zapis");
                     newPerson.getJd().dispose();
                 }
+            }
+        }
+        public void saveDataInDB(){
+            model.writeConfigData(treeControl.getList());
+            if (!model.getError())
+            {
+                DialogInfo dialogInfo= new DialogInfo(configuration.getConfiguration(), "Wystąpił bład, nie zapisano danych.", "Błąd!");
+            } else if (frame.getBorder().getLayoutComponent(CENTER) != null) {
+
+                DialogInfo dialogInfo = new DialogInfo(configuration.getConfiguration(), "Dane zostały pomyślnie zapisane", "Sukces!");
+                frame.remove(frame.getBorder().getLayoutComponent(CENTER));
+                JPanel empty = new JPanel();
+                frame.add(empty, CENTER);
+                frame.revalidate();
             }
         }
     }

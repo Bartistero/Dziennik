@@ -61,55 +61,81 @@ public class ConfigurationData {
         }
     }
     protected  boolean writeData(ArrayList<ConfigurationStudent> lista){
-        try{
+        int j = 0;
+         int records = 0;
+
+        try {
             boolean delete = true;
             statement = conect.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT * FROM personaldata");
-            int j=0;
-
-
-            while(resultSet.next()){
+            Statement statement2 = conect.getConnection().createStatement();
+            while (resultSet.next()) {
                 j++;
                 delete = true;
                 String index = resultSet.getString(1);
-                for(int i=0;i<lista.size();i++){
-                   if(index.equals(lista.get(i).getid())){
-                       delete = false;
-                       break;
-                   }
+
+                for (int i = 0; i < lista.size(); i++) {
+                    if (index.equals(lista.get(i).getid())) {
+                        delete = false;
+                        break;
+                    }
                 }
-                if(delete){
+                if (delete) {
                     delete = true;
-                    statement.executeUpdate("DELETE from personaldata WHERE ID =\"" + index +"\"");
-                    statement.executeUpdate("DELETE from marks WHERE ID =\"" + index +"\"");
-                    statement.executeUpdate("DELETE from present WHERE ID =\"" + index +"\"");
+                    statement2.executeUpdate("DELETE from personaldata WHERE ID =\"" + index + "\"");
+                    statement2.executeUpdate("DELETE from marks WHERE ID =\"" + index + "\"");
+                    statement2.executeUpdate("DELETE from present WHERE ID =\"" + index + "\"");
                     System.out.println("Usuam: " + index);
                 }
+
             }
-          /*  //save new students in DB
-            if(j<lista.size()){
-                System.out.println("Warunek jest spełniony");
-                for(;j<=lista.size();j++){
-                    System.out.println("wykonałem zapis");
-                    String query =" INSERT INTO `personaldata`(`ID`, `Name`, `Surrname`, `Addres`, `PESEL`, `Tel`, `eMail`) VALUES ("
-                            + lista.get(j).getid() +  "," + lista.get(j).getName() + "," +lista.get(j).getSurname() + "," +
-                            lista.get(j).getAddress() + ", " + lista.get(j).getPESEL() + "," +
-                            lista.get(j).getTel() + "," + lista.get(j).geteMail() + ")" ;
-                    System.out.println(query);
-                    statement.executeUpdate(query);
 
-                }
-            }*/
-
-
-
-
-
-                //the error didn't show
+        }catch(Exception e) {
+            System.out.println("Przy usuwaniu: " + e.getMessage());
             return false;
-        }catch(Exception e){
-            return true;
         }
+        //update data
+       try {
+           resultSet = statement.executeQuery("SELECT * FROM personaldata");
+            resultSet.last();
+           records = resultSet.getRow();
+                for(int i=0;i<records;i++){
+                    String query = " UPDATE `personaldata`, `marks`, `present`  SET personaldata.Name =\""  + lista.get(i).getName() +  "\", personaldata.Surrname=\""
+                            +lista.get(i).getSurname() + "\", personaldata.Addres=\"" +
+                            lista.get(i).getAddress() + "\", personaldata.PESEL=\"" + lista.get(i).getPESEL() + "\",personaldata.Tel=\"" +
+                            lista.get(i).getTel() + "\",personaldata.eMail=\"" + lista.get(i).geteMail() +  "\",marks.Name = \""  + lista.get(i).getName() + "\",marks.Surrname =\"" +
+                            lista.get(i).getSurname() + "\",present.Name = \""  + lista.get(i).getName() + "\",present.Surrname =\"" +
+                            lista.get(i).getSurname() + "\"WHERE personaldata.ID =\"" +lista.get(i).getid() + "\" AND present.Id =\"" + lista.get(i).getid() + "\" AND marks.ID = \""
+                            + lista.get(i).getid() + "\" ";
+                    //System.out.println(query);
+                    statement.executeUpdate(query);
+                }
+
+
+        }catch(Exception e) {
+            System.out.println("Przy update " + e.getMessage());
+            return false;
+        }
+
+
+        //save new students in DB
+        try{
+            for(;j<lista.size();j++) {
+                System.out.println("wykonałem zapis");
+                String query = " INSERT INTO `personaldata`(`ID`, `Name`, `Surrname`, `Addres`, `PESEL`, `Tel`, `eMail`) VALUES (\""
+                        + lista.get(j).getid() + "\",\"" + lista.get(j).getName() + "\",\"" + lista.get(j).getSurname() + "\",\"" +
+                        lista.get(j).getAddress() + "\",\"" + lista.get(j).getPESEL() + "\",\"" +
+                        lista.get(j).getTel() + "\",\"" + lista.get(j).geteMail() + "\")";
+                System.out.println(query);
+                statement.executeUpdate(query);
+            }
+        }catch(Exception e){
+            System.out.println("przy dodaniu nowego: " + e.getMessage());
+            return false;
+        }
+
+        //the error didn't show
+        return true;
     }
     public ArrayList<ConfigurationStudent> getStudentList() {
         return studentList;

@@ -114,7 +114,7 @@ public class ModelFasade implements Fasade {
             configurationData = new ConfigurationData(conect);
             error = configurationData.writeData(list);
             conect.disconect();
-
+            System.out.println(error);
         }else{
             error = true;
         }
